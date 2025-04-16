@@ -2,15 +2,16 @@ import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { 
   Calculator, RotateCcw, Clock, ChevronDown, ChevronUp,
-  FunctionSquare, ArrowLeftRight
+  FunctionSquare, ArrowLeftRight, LineChart
 } from 'lucide-react'
 import MainFeature from '../components/MainFeature'
 import ScientificCalculator from '../components/ScientificCalculator'
+import GraphEquationCalculator from '../components/GraphEquationCalculator'
 
 function Home() {
   const [showHistory, setShowHistory] = useState(false)
   const [calculationHistory, setCalculationHistory] = useState([])
-  const [calculatorMode, setCalculatorMode] = useState('standard') // 'standard' or 'scientific'
+  const [calculatorMode, setCalculatorMode] = useState('standard') // 'standard', 'scientific', or 'graph'
   
   const addToHistory = (expression, result) => {
     const newEntry = {
@@ -25,8 +26,39 @@ function Home() {
     setCalculationHistory([])
   }
 
-  const toggleCalculatorMode = () => {
-    setCalculatorMode(prev => prev === 'standard' ? 'scientific' : 'standard')
+  const cycleCalculatorMode = () => {
+    setCalculatorMode(prev => {
+      if (prev === 'standard') return 'scientific'
+      if (prev === 'scientific') return 'graph'
+      return 'standard'
+    })
+  }
+
+  const getCalculatorIcon = () => {
+    switch (calculatorMode) {
+      case 'standard': return <Calculator className="text-primary" size={24} />
+      case 'scientific': return <FunctionSquare className="text-primary" size={24} />
+      case 'graph': return <LineChart className="text-primary" size={24} />
+      default: return <Calculator className="text-primary" size={24} />
+    }
+  }
+
+  const getCalculatorTitle = () => {
+    switch (calculatorMode) {
+      case 'standard': return 'Smart Calculator'
+      case 'scientific': return 'Scientific Calculator'
+      case 'graph': return 'Graph & Equations'
+      default: return 'Smart Calculator'
+    }
+  }
+
+  const getNextModeLabel = () => {
+    switch (calculatorMode) {
+      case 'standard': return 'Scientific'
+      case 'scientific': return 'Graph & Eq'
+      case 'graph': return 'Standard'
+      default: return 'Scientific'
+    }
   }
 
   return (
@@ -39,24 +71,20 @@ function Home() {
       >
         <div className="mb-6 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            {calculatorMode === 'standard' ? (
-              <Calculator className="text-primary" size={24} />
-            ) : (
-              <FunctionSquare className="text-primary" size={24} />
-            )}
+            {getCalculatorIcon()}
             <h1 className="text-2xl font-bold">
-              {calculatorMode === 'standard' ? 'Smart Calculator' : 'Scientific Calculator'}
+              {getCalculatorTitle()}
             </h1>
           </div>
           
           <div className="flex items-center gap-3">
             <motion.button
               whileTap={{ scale: 0.95 }}
-              onClick={toggleCalculatorMode}
+              onClick={cycleCalculatorMode}
               className="flex items-center gap-1 text-sm font-medium text-secondary hover:text-secondary-dark transition-colors"
             >
               <ArrowLeftRight size={16} />
-              {calculatorMode === 'standard' ? 'Scientific' : 'Standard'}
+              {getNextModeLabel()}
             </motion.button>
             
             <motion.button
@@ -115,7 +143,7 @@ function Home() {
         </AnimatePresence>
         
         <AnimatePresence mode="wait">
-          {calculatorMode === 'standard' ? (
+          {calculatorMode === 'standard' && (
             <motion.div
               key="standard"
               initial={{ opacity: 0, x: -20 }}
@@ -125,7 +153,9 @@ function Home() {
             >
               <MainFeature onCalculate={addToHistory} />
             </motion.div>
-          ) : (
+          )}
+          
+          {calculatorMode === 'scientific' && (
             <motion.div
               key="scientific"
               initial={{ opacity: 0, x: 20 }}
@@ -134,6 +164,18 @@ function Home() {
               transition={{ duration: 0.3 }}
             >
               <ScientificCalculator onCalculate={addToHistory} />
+            </motion.div>
+          )}
+
+          {calculatorMode === 'graph' && (
+            <motion.div
+              key="graph"
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -20 }}
+              transition={{ duration: 0.3 }}
+            >
+              <GraphEquationCalculator onCalculate={addToHistory} />
             </motion.div>
           )}
         </AnimatePresence>
