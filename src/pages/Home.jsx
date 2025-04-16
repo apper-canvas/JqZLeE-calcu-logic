@@ -1,11 +1,16 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Calculator, RotateCcw, Clock, ChevronDown, ChevronUp } from 'lucide-react'
+import { 
+  Calculator, RotateCcw, Clock, ChevronDown, ChevronUp,
+  FunctionSquare, ArrowLeftRight
+} from 'lucide-react'
 import MainFeature from '../components/MainFeature'
+import ScientificCalculator from '../components/ScientificCalculator'
 
 function Home() {
   const [showHistory, setShowHistory] = useState(false)
   const [calculationHistory, setCalculationHistory] = useState([])
+  const [calculatorMode, setCalculatorMode] = useState('standard') // 'standard' or 'scientific'
   
   const addToHistory = (expression, result) => {
     const newEntry = {
@@ -20,6 +25,10 @@ function Home() {
     setCalculationHistory([])
   }
 
+  const toggleCalculatorMode = () => {
+    setCalculatorMode(prev => prev === 'standard' ? 'scientific' : 'standard')
+  }
+
   return (
     <div className="container mx-auto px-4 py-8">
       <motion.div
@@ -30,19 +39,36 @@ function Home() {
       >
         <div className="mb-6 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <Calculator className="text-primary" size={24} />
-            <h1 className="text-2xl font-bold">Smart Calculator</h1>
+            {calculatorMode === 'standard' ? (
+              <Calculator className="text-primary" size={24} />
+            ) : (
+              <FunctionSquare className="text-primary" size={24} />
+            )}
+            <h1 className="text-2xl font-bold">
+              {calculatorMode === 'standard' ? 'Smart Calculator' : 'Scientific Calculator'}
+            </h1>
           </div>
           
-          <motion.button
-            whileTap={{ scale: 0.95 }}
-            onClick={() => setShowHistory(!showHistory)}
-            className="flex items-center gap-1 text-sm font-medium text-primary hover:text-primary-dark transition-colors"
-          >
-            <Clock size={16} />
-            History
-            {showHistory ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
-          </motion.button>
+          <div className="flex items-center gap-3">
+            <motion.button
+              whileTap={{ scale: 0.95 }}
+              onClick={toggleCalculatorMode}
+              className="flex items-center gap-1 text-sm font-medium text-secondary hover:text-secondary-dark transition-colors"
+            >
+              <ArrowLeftRight size={16} />
+              {calculatorMode === 'standard' ? 'Scientific' : 'Standard'}
+            </motion.button>
+            
+            <motion.button
+              whileTap={{ scale: 0.95 }}
+              onClick={() => setShowHistory(!showHistory)}
+              className="flex items-center gap-1 text-sm font-medium text-primary hover:text-primary-dark transition-colors"
+            >
+              <Clock size={16} />
+              History
+              {showHistory ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+            </motion.button>
+          </div>
         </div>
         
         <AnimatePresence>
@@ -88,7 +114,29 @@ function Home() {
           )}
         </AnimatePresence>
         
-        <MainFeature onCalculate={addToHistory} />
+        <AnimatePresence mode="wait">
+          {calculatorMode === 'standard' ? (
+            <motion.div
+              key="standard"
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: 20 }}
+              transition={{ duration: 0.3 }}
+            >
+              <MainFeature onCalculate={addToHistory} />
+            </motion.div>
+          ) : (
+            <motion.div
+              key="scientific"
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -20 }}
+              transition={{ duration: 0.3 }}
+            >
+              <ScientificCalculator onCalculate={addToHistory} />
+            </motion.div>
+          )}
+        </AnimatePresence>
       </motion.div>
     </div>
   )

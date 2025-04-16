@@ -33,6 +33,10 @@
     @apply calculator-key bg-accent text-white hover:bg-accent/90 active:scale-95;
   }
   
+  .calculator-key-scientific {
+    @apply calculator-key bg-surface-200 dark:bg-surface-700 text-surface-800 dark:text-surface-100 hover:bg-surface-300 dark:hover:bg-surface-600 active:scale-95 text-sm;
+  }
+  
   .calculator-display {
     @apply w-full p-4 rounded-xl bg-surface-50 dark:bg-surface-800 border border-surface-200 dark:border-surface-700 text-right font-mono;
   }
