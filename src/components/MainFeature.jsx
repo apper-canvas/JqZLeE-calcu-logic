@@ -2,8 +2,8 @@ import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { 
   X, Delete, Divide, Plus, Minus, 
-  Percent, SquareRoot, ArrowLeft, 
-  RotateCcw, Calculator
+  Percent, ArrowLeft, 
+  RotateCcw, Calculator, FunctionSquare
 } from 'lucide-react'
 
 function MainFeature({ onCalculate }) {
@@ -220,7 +220,7 @@ function MainFeature({ onCalculate }) {
           onClick={handleSquareRoot}
           className="calculator-key-function"
         >
-          <SquareRoot size={18} />
+          <FunctionSquare size={18} />
         </motion.button>
         <motion.button 
           whileTap={{ scale: 0.95 }}
