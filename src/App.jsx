@@ -8,8 +8,7 @@ import NotFound from './pages/NotFound'
 function App() {
   const [darkMode, setDarkMode] = useState(() => {
     const savedMode = localStorage.getItem('darkMode')
-    return savedMode ? JSON.parse(savedMode) : 
-      window.matchMedia('(prefers-color-scheme: dark)').matches
+    return savedMode ? JSON.parse(savedMode) : false
   })
 
   useEffect(() => {
