@@ -565,7 +565,7 @@ function ScientificCalculator({ onCalculate }) {
       <div className="mt-6 flex justify-center">
         <div className="flex items-center gap-2 text-xs text-surface-500">
           <Calculator size={14} />
-          <span>CalcuLogic Scientific Mode</span>
+          <span>CalciPro Scientific Mode</span>
         </div>
       </div>
     </motion.div>

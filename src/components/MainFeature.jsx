@@ -361,7 +361,7 @@ function MainFeature({ onCalculate }) {
       <div className="mt-6 flex justify-center">
         <div className="flex items-center gap-2 text-xs text-surface-500">
           <Calculator size={14} />
-          <span>CalcuLogic Standard Mode</span>
+          <span>CalciPro Standard Mode</span>
         </div>
       </div>
     </motion.div>

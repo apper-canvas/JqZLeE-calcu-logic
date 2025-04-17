@@ -85,7 +85,7 @@ function GraphEquationCalculator({ onCalculate }) {
       <div className="mt-6 flex justify-center">
         <div className="flex items-center gap-2 text-xs text-surface-500">
           <ArrowLeftRight size={14} />
-          <span>CalcuLogic Graph & Equations Mode</span>
+          <span>CalciPro Graph & Equations Mode</span>
         </div>
       </div>
     </motion.div>
